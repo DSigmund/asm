@@ -1,0 +1,50 @@
+{
+  "name": "asm",
+  "version": "1.0.1",
+  "description": "Simple node.js Tools that collects Information from Social Media Channels into a MySQL-Database.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "test:mutation": "stryker run",
+    "lint": "tslint -p . -c tslint.json src/**/*.ts",
+    "lint:fix": "tslint -p . -c tslint.json src/**/*.ts --fix",
+    "tsdoc": "typedoc  --out docs/tsdoc src --exclude src/**/*.test.ts",
+    "check":"npm audit && npm outdated",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DSigmund/asm.git"
+  },
+  "author": "Dominik Sigmund <dominik.sigmund@br.de>",
+  "license": "Unlicense",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@stryker-mutator/core": "^2.0.1",
+    "@stryker-mutator/typescript": "^2.0.1",
+    "@types/jest": "^24.0.13",
+    "husky": "^3.0.0",
+    "jest": "^24.8.0",
+    "jest-html-reporters": "^1.1.8",
+    "standard": "^13.0.0",
+    "stryker": "^0.35.1",
+    "stryker-api": "^0.24.1",
+    "stryker-html-reporter": "^0.18.1",
+    "stryker-jest-runner": "^1.4.1",
+    "stryker-typescript": "^0.18.1",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
+    "tslint-config-security": "^1.16.0",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-jest": "^1.0.5",
+    "typedoc": "^0.15.0-0",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
+  }
+}

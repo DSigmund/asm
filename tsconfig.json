@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target":"ES6",
+    "module": "commonjs",
+    "lib": ["es2015"],
+    "strict": true,
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "rootDir": "./src/"
+  },
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.ts",
+    "./dist/"
+  ],
+}
