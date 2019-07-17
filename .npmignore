@@ -1,4 +1,4 @@
 src/
 docs/
 dist/config.json
-dist/database.sqlite
+dist/data

@@ -3,5 +3,7 @@ coverage/
 stryker.log
 src/config.json
 dist/config.json
-src/database.sqlite
-dist/database.sqlite
+src/data/
+!src/data/reach.sample.json
+!src/data/posts.sample.json
+dist/data/

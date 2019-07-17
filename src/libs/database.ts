@@ -1,15 +1,10 @@
-const sqlite3 = require('sqlite3').verbose()
 
 class Database {
-
-  private _database: any
-
   constructor (path: string) {
-    this._database = new sqlite3.Database(path)
+    // TODO: load json files from path.
   }
 
   public async InsertReach (channel: string, fans: any): Promise<void> {
-    this._database.run('INSERT INTO reach (Channel, TimeStamp, Reach) VALUES(?, ?, ?)', channel, this.getToday(), fans)
     console.log(channel + ' Reach: ' + fans)
   }
 
