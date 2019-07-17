@@ -1,3 +1,7 @@
 node_modules/
 coverage/
 stryker.log
+src/config.json
+dist/config.json
+src/database.sqlite
+dist/database.sqlite
