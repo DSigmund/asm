@@ -10,8 +10,21 @@ import Facebook from './libs/facebook'
 import config from './config.json'
 import Database from './libs/database'
 
-let database = new Database(config.database)
+async function run () {
+  try {
+    let database = new Database(config.database)
+    await database.LoadDatabase()
 
-let fb = new Facebook(database, config.channels.facebook.pageid, config.channels.facebook.token)
+    let fb = new Facebook(database, config.channels.facebook.pageid, config.channels.facebook.token)
 
-fb.CollectData()
+    await fb.CollectData()
+
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+run().then(
+  function (result) { console.log('Done') },
+  function (error) { console.error(error) }
+)

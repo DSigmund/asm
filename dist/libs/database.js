@@ -7,17 +7,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const sqlite3 = require('sqlite3').verbose();
+const moment_1 = __importDefault(require("moment"));
+const fs = require('fs');
+const path = require('path');
+const { promisify } = require('util');
 class Database {
-    constructor(path) {
-        this._database = new sqlite3.Database(path);
+    constructor(databasePath) {
+        // tslint:disable-next-line: tsr-detect-non-literal-fs-filename
+        this._writeFile = promisify(fs.writeFile);
+        // tslint:disable-next-line: tsr-detect-non-literal-fs-filename
+        this._readFile = promisify(fs.readFile);
+        this._path = databasePath;
     }
-    InsertReach(channel, fans) {
+    LoadDatabase() {
         return __awaiter(this, void 0, void 0, function* () {
-            this._database.run('INSERT INTO reach (Channel, TimeStamp, Reach) VALUES(?, ?, ?)', channel, this.getToday(), fans);
-            console.log(channel + ' Reach: ' + fans);
+            this._reach = yield this._readFile(path.join(this._path, 'reach.json'));
+            this._posts = yield this._readFile(path.join(this._path, 'posts.json'));
         });
+    }
+    InsertReach(channel, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let yearKW = moment_1.default().format('YYYY-WW');
+            let now = moment_1.default().format('YYYY-MM-DD');
+            this.createChannelIfNeeded(channel);
+            this._reach[channel][yearKW] = {
+                timestamp: now,
+                data: data
+            };
+            yield this._writeFile(path.join(this._path, 'reach.json'), JSON.stringify(this._reach));
+        });
+    }
+    createChannelIfNeeded(channel) {
+        if (!this._reach[channel])
+            this._reach[channel] = {};
     }
     InsertPost(channel, id, title, reactions, comments) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,34 +53,13 @@ class Database {
     }
     getPosts(channel, from, to) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error("Method not implemented.");
+            throw new Error('Method not implemented.');
         });
     }
     getReach(channel, from, to) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error("Method not implemented.");
+            throw new Error('Method not implemented.');
         });
-    }
-    getToday() {
-        let today = new Date();
-        let dd = today.getDate();
-        let mm = today.getMonth() + 1; //January is 0!
-        let yyyy = today.getFullYear();
-        let day = '';
-        if (dd < 10) {
-            day = '0' + dd;
-        }
-        else {
-            day = dd.toString();
-        }
-        let month = '';
-        if (mm < 10) {
-            month = '0' + mm;
-        }
-        else {
-            month = mm.toString();
-        }
-        return yyyy + '-' + month + '-' + day;
     }
 }
 exports.default = Database;

@@ -19,16 +19,19 @@ class Facebook extends Channel {
     await this._database.InsertReach('facebook', fans)
 
     response = await request('https://graph.facebook.com/v3.3/' + this._pageid + '/posts?fields=id%2Ccreated_time%2Cmessage%2Creactions%2Ccomments&access_token=' + this._token)
+    console.log(response.body)
     let posts = JSON.parse(response.body).data
     for (let index = 0; index < posts.length; index++) {
       const post = posts[index]
       if (!post.message) continue // No Message means, this is no real post
       let reactions = 0
-      if (post.reactions) {
+      if (post.reactions && post.reactions.data) {
+        console.log(post.reactions)
         reactions = post.reactions.data.length
       }
       let comments = 0
-      if (post.comments) {
+      if (post.comments && post.comments.data) {
+        console.log(post.comments)
         comments = post.comments.data.length
       }
       await this._database.InsertPost('facebook', post.id, post.message, reactions, comments)

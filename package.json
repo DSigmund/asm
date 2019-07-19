@@ -21,7 +21,8 @@
   "license": "Unlicense",
   "dependencies": {
     "async-request": "^1.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@stryker-mutator/core": "^2.0.1",

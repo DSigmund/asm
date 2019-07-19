@@ -1,11 +1,42 @@
+import moment from 'moment'
+const fs = require('fs')
+const path = require('path')
+const { promisify } = require('util')
 
 class Database {
-  constructor (path: string) {
-    // TODO: load json files from path.
+  private _path: string
+  private _reach: any
+  private _posts: any
+  private _writeFile: any
+  private _readFile: any
+  constructor (databasePath: string) {
+    // tslint:disable-next-line: tsr-detect-non-literal-fs-filename
+    this._writeFile = promisify(fs.writeFile)
+    // tslint:disable-next-line: tsr-detect-non-literal-fs-filename
+    this._readFile = promisify(fs.readFile)
+
+    this._path = databasePath
+  }
+  public async LoadDatabase (): Promise<void> {
+    this._reach = await this._readFile(path.join(this._path, 'reach.json'))
+    this._posts = await this._readFile(path.join(this._path, 'posts.json'))
   }
 
-  public async InsertReach (channel: string, fans: any): Promise<void> {
-    console.log(channel + ' Reach: ' + fans)
+  public async InsertReach (channel: string, data: any): Promise<void> {
+    let yearKW: any = moment().format('YYYY-WW')
+    let now: any = moment().format('YYYY-MM-DD')
+
+    this.createChannelIfNeeded(channel)
+
+    this._reach[channel][yearKW] = {
+      timestamp: now,
+      data: data
+    }
+
+    await this._writeFile(path.join(this._path, 'reach.json'), JSON.stringify(this._reach))
+  }
+  private createChannelIfNeeded (channel: string): void {
+    if (!this._reach[channel]) this._reach[channel] = {}
   }
 
   public async InsertPost (channel: string, id: string, title: string, reactions: number, comments: number): Promise<void> {
@@ -19,27 +50,6 @@ class Database {
   }
   public async getReach (channel: string, from: Date, to: Date): Promise<number> {
     throw new Error('Method not implemented.')
-  }
-
-  private getToday (): string {
-    let today = new Date()
-    let dd = today.getDate()
-    let mm = today.getMonth() + 1 // January is 0!
-
-    let yyyy = today.getFullYear()
-    let day = ''
-    if (dd < 10) {
-      day = '0' + dd
-    } else {
-      day = dd.toString()
-    }
-    let month = ''
-    if (mm < 10) {
-      month = '0' + mm
-    } else {
-      month = mm.toString()
-    }
-    return yyyy + '-' + month + '-' + day
   }
 }
 
