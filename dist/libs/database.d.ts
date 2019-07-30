@@ -1,4 +1,7 @@
 declare class Database {
+    GetYearData(year: any): void;
+    GetMonthData(year: any, month: any): void;
+    GetWeekData(year: any, kw: any): void;
     private _path;
     private _channel;
     private _posts;

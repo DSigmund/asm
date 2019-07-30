@@ -4,6 +4,15 @@ const path = require('path')
 const { promisify } = require('util')
 
 class Database {
+  GetYearData (year: any) {
+    throw new Error("Method not implemented.");
+  }
+  GetMonthData (year: any, month: any) {
+    throw new Error("Method not implemented.");
+  }
+  GetWeekData (year: any, kw: any) {
+    throw new Error("Method not implemented.");
+  }
   private _path: string
   private _channel: any
   private _posts: any

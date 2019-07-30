@@ -7,15 +7,12 @@ import express from 'express'
 import helmet from 'helmet'
 import { readFileSync } from 'fs'
 import * as https from 'https'
-import * as path from "path"
+import * as path from 'path'
 
 import * as config from './config.json'
 import Database from './libs/database'
 
 const app: express.Application = express()
-
-app.set('views', path.join(__dirname, '../views'))
-app.set('view engine', 'pug')
 
 const sslOptions = {
   key: readFileSync(config.ssl.privatekey),
@@ -52,25 +49,28 @@ app.get('/:channel/posts', function (req, res) {
   }
 })
 
-app.get('/report/week/:year/:kw', function (req, res) { // TODO: week as HTML
+app.get('/report/week/:year/:kw', function (req, res) {
   try {
-    res.json({})
+    let filename = req.params.year + '-' + req.params.kw + '.html'
+    res.sendFile(path.join(config.reports, 'week', filename))
   } catch (error) {
     res.status(500).json(error.toJSON())
   }
 })
 
-app.get('/report/month/:year/:month', function (req, res) { // TODO: month as HTML
+app.get('/report/month/:year/:month', function (req, res) {
   try {
-    res.json({})
+    let filename = req.params.year + '-' + req.params.month + '.html'
+    res.sendFile(path.join(config.reports, 'month', filename))
   } catch (error) {
     res.status(500).json(error.toJSON())
   }
 })
 
-app.get('/report/year/:year', function (req, res) { // TODO: year as HTML
+app.get('/report/year/:year', function (req, res) {
   try {
-    res.json({})
+    let filename = req.params.year + '.html'
+    res.sendFile(path.join(config.reports, 'year', filename))
   } catch (error) {
     res.status(500).json(error.toJSON())
   }

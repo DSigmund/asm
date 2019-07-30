@@ -16,6 +16,15 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 class Database {
+    GetYearData(year) {
+        throw new Error("Method not implemented.");
+    }
+    GetMonthData(year, month) {
+        throw new Error("Method not implemented.");
+    }
+    GetWeekData(year, kw) {
+        throw new Error("Method not implemented.");
+    }
     constructor(databasePath) {
         // tslint:disable-next-line: tsr-detect-non-literal-fs-filename
         this._writeFile = promisify(fs.writeFile);

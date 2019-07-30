@@ -23,8 +23,6 @@ const path = __importStar(require("path"));
 const config = __importStar(require("./config.json"));
 const database_1 = __importDefault(require("./libs/database"));
 const app = express_1.default();
-app.set('views', path.join(__dirname, '../views'));
-app.set('view engine', 'pug');
 const sslOptions = {
     key: fs_1.readFileSync(config.ssl.privatekey),
     cert: fs_1.readFileSync(config.ssl.certificate)
@@ -57,7 +55,8 @@ app.get('/:channel/posts', function (req, res) {
 });
 app.get('/report/week/:year/:kw', function (req, res) {
     try {
-        res.json({});
+        let filename = req.params.year + '-' + req.params.kw + '.html';
+        res.sendFile(path.join(config.reports, 'week', filename));
     }
     catch (error) {
         res.status(500).json(error.toJSON());
@@ -65,7 +64,8 @@ app.get('/report/week/:year/:kw', function (req, res) {
 });
 app.get('/report/month/:year/:month', function (req, res) {
     try {
-        res.json({});
+        let filename = req.params.year + '-' + req.params.month + '.html';
+        res.sendFile(path.join(config.reports, 'month', filename));
     }
     catch (error) {
         res.status(500).json(error.toJSON());
@@ -73,7 +73,8 @@ app.get('/report/month/:year/:month', function (req, res) {
 });
 app.get('/report/year/:year', function (req, res) {
     try {
-        res.json({});
+        let filename = req.params.year + '.html';
+        res.sendFile(path.join(config.reports, 'year', filename));
     }
     catch (error) {
         res.status(500).json(error.toJSON());

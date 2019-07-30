@@ -9,3 +9,4 @@ src/data/
 !src/data/reach.sample.json
 !src/data/posts.sample.json
 dist/data/
+reports/
