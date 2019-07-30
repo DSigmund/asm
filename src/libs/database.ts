@@ -4,15 +4,6 @@ const path = require('path')
 const { promisify } = require('util')
 
 class Database {
-  GetYearData (year: any) {
-    throw new Error("Method not implemented.");
-  }
-  GetMonthData (year: any, month: any) {
-    throw new Error("Method not implemented.");
-  }
-  GetWeekData (year: any, kw: any) {
-    throw new Error("Method not implemented.");
-  }
   private _path: string
   private _channel: any
   private _posts: any
@@ -83,12 +74,43 @@ class Database {
       throw new Error('Method not fully implemented.')
     }
   }
+
   public GetChannelInfo (channel: string, from?: Date, to?: Date): Promise<any> {
     if (!from && !to) {
       return this._channel[channel]
     } else {
       throw new Error('Method not fully implemented.')
     }
+  }
+
+  public GetYearData (year: any): any {
+    throw new Error("Method not implemented.");
+  }
+  public GetMonthData (year: any, month: any): any {
+    throw new Error("Method not implemented.");
+  }
+  public GetWeekData (moment: moment.Moment): any {
+    let yearKW: any = moment.format('YYYY-WW')
+    let lastyearKW: any = moment.clone().subtract(1, 'week').format('YYYY-WW')
+    let data: any = {}
+    let self = this
+    Object.keys(self._channel).forEach(function (c) {
+      let channel = self._channel[c]
+      data[c] = {
+        now: channel[yearKW].data,
+        last: channel[lastyearKW].data,
+        diff: self.getdiff(channel[yearKW].data, channel[lastyearKW].data)
+      }
+      // TODO: add posts
+    })
+    return data
+  }
+  private getdiff (thisWeek: any, lastWeek: any): any {
+    let diff: any = {}
+    Object.keys(thisWeek).forEach(function (v) {
+      diff[v] = thisWeek[v] - lastWeek[v]
+    })
+    return diff
   }
 }
 

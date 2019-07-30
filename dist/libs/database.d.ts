@@ -1,7 +1,5 @@
+import moment from 'moment';
 declare class Database {
-    GetYearData(year: any): void;
-    GetMonthData(year: any, month: any): void;
-    GetWeekData(year: any, kw: any): void;
     private _path;
     private _channel;
     private _posts;
@@ -15,5 +13,9 @@ declare class Database {
     InsertPost(channel: string, id: string, create: string, title: string, link: string, data: any): Promise<void>;
     getPosts(channel: string, from?: Date, to?: Date): Promise<any>;
     GetChannelInfo(channel: string, from?: Date, to?: Date): Promise<any>;
+    GetYearData(year: any): any;
+    GetMonthData(year: any, month: any): any;
+    GetWeekData(moment: moment.Moment): any;
+    private getdiff;
 }
 export default Database;

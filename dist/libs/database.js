@@ -16,15 +16,6 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 class Database {
-    GetYearData(year) {
-        throw new Error("Method not implemented.");
-    }
-    GetMonthData(year, month) {
-        throw new Error("Method not implemented.");
-    }
-    GetWeekData(year, kw) {
-        throw new Error("Method not implemented.");
-    }
     constructor(databasePath) {
         // tslint:disable-next-line: tsr-detect-non-literal-fs-filename
         this._writeFile = promisify(fs.writeFile);
@@ -98,6 +89,35 @@ class Database {
         else {
             throw new Error('Method not fully implemented.');
         }
+    }
+    GetYearData(year) {
+        throw new Error("Method not implemented.");
+    }
+    GetMonthData(year, month) {
+        throw new Error("Method not implemented.");
+    }
+    GetWeekData(moment) {
+        let yearKW = moment.format('YYYY-WW');
+        let lastyearKW = moment.clone().subtract(1, 'week').format('YYYY-WW');
+        let data = {};
+        let self = this;
+        Object.keys(self._channel).forEach(function (c) {
+            let channel = self._channel[c];
+            data[c] = {
+                now: channel[yearKW].data,
+                last: channel[lastyearKW].data,
+                diff: self.getdiff(channel[yearKW].data, channel[lastyearKW].data)
+            };
+        });
+        console.log(JSON.stringify(data));
+        return data;
+    }
+    getdiff(thisWeek, lastWeek) {
+        let diff = {};
+        Object.keys(thisWeek).forEach(function (v) {
+            diff[v] = thisWeek[v] - lastWeek[v];
+        });
+        return diff;
     }
 }
 exports.default = Database;
