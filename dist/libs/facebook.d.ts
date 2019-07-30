@@ -5,7 +5,7 @@ declare class Facebook extends Channel {
     private _token;
     constructor(database: Database, pageid: string, token: string);
     CollectData(): Promise<void>;
-    GetReach(from: Date, to: Date): Promise<number>;
+    GetChannelInfo(from: Date, to: Date): Promise<any>;
     GetPosts(from: Date, to: Date): Promise<Post[]>;
 }
 export default Facebook;

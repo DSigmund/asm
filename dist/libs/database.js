@@ -25,30 +25,55 @@ class Database {
     }
     LoadDatabase() {
         return __awaiter(this, void 0, void 0, function* () {
-            this._reach = yield this._readFile(path.join(this._path, 'reach.json'));
-            this._posts = yield this._readFile(path.join(this._path, 'posts.json'));
+            this._channel = yield this._readFile(path.join(this._path, 'channel.json'), 'utf8');
+            this._channel = JSON.parse(this._channel);
+            this._posts = yield this._readFile(path.join(this._path, 'posts.json'), 'utf8');
+            this._posts = JSON.parse(this._posts);
         });
     }
-    InsertReach(channel, data) {
+    SaveDatabase() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this._writeFile(path.join(this._path, 'channel.json'), JSON.stringify(this._channel), 'utf8');
+            yield this._writeFile(path.join(this._path, 'posts.json'), JSON.stringify(this._posts), 'utf8');
+        });
+    }
+    InsertChannelInfo(channel, data) {
         return __awaiter(this, void 0, void 0, function* () {
             let yearKW = moment_1.default().format('YYYY-WW');
             let now = moment_1.default().format('YYYY-MM-DD');
             this.createChannelIfNeeded(channel);
-            this._reach[channel][yearKW] = {
+            this._channel[channel][yearKW] = {
                 timestamp: now,
                 data: data
             };
-            yield this._writeFile(path.join(this._path, 'reach.json'), JSON.stringify(this._reach));
+            console.log(channel + ' PAGE: ' + JSON.stringify(data));
         });
     }
     createChannelIfNeeded(channel) {
-        if (!this._reach[channel])
-            this._reach[channel] = {};
+        if (!this._channel[channel])
+            this._channel[channel] = {};
+        if (!this._posts[channel])
+            this._posts[channel] = {};
     }
-    InsertPost(channel, id, title, reactions, comments) {
+    InsertPost(channel, id, create, title, link, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(channel + ' Post : ' + id + ': ' + title.substring(0, 25) + ' > Reactions: ' + reactions + ' > Comments: ' + comments);
-            // TODO: into database with timestamp
+            let yearKW = moment_1.default().format('YYYY-WW');
+            let now = moment_1.default().format('YYYY-MM-DD');
+            this.createChannelIfNeeded(channel);
+            if (!this._posts[channel][id]) {
+                this._posts[channel][id] = {
+                    id: id,
+                    create: create,
+                    title: title.substring(0, 35),
+                    link: link,
+                    data: {}
+                };
+            }
+            this._posts[channel][id].data[yearKW] = {
+                timestamp: now,
+                data: data
+            };
+            console.log(channel + ' Post : ' + id + ': ' + title.substring(0, 25) + ' > ' + JSON.stringify(data));
         });
     }
     getPosts(channel, from, to) {
@@ -56,7 +81,7 @@ class Database {
             throw new Error('Method not implemented.');
         });
     }
-    getReach(channel, from, to) {
+    GetChannelInfo(channel, from, to) {
         return __awaiter(this, void 0, void 0, function* () {
             throw new Error('Method not implemented.');
         });

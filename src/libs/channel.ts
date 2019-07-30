@@ -11,9 +11,8 @@ abstract class Channel {
   constructor (database: Database) {
     this._database = database
   }
-
   public async abstract CollectData (): Promise<void>
-  public async abstract GetReach (from: Date, to: Date): Promise<number>
+  public async abstract GetChannelInfo (from: Date, to: Date): Promise<any>
   public async abstract GetPosts (from: Date, to: Date): Promise<Post[]>
 }
 

@@ -19,6 +19,8 @@ async function run () {
 
     await fb.CollectData()
 
+    await database.SaveDatabase()
+
   } catch (err) {
     console.error(err)
   }

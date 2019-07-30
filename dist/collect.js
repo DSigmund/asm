@@ -28,6 +28,7 @@ function run() {
             yield database.LoadDatabase();
             let fb = new facebook_1.default(database, config_json_1.default.channels.facebook.pageid, config_json_1.default.channels.facebook.token);
             yield fb.CollectData();
+            yield database.SaveDatabase();
         }
         catch (err) {
             console.error(err);
