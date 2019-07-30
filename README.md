@@ -186,6 +186,9 @@ Nicht möglich, indirekt über den Podcast-Feed
 - Alle neuen Posts (Claps, Comments)
 - Top 10 des Zeitraums (Claps, Comments)
 
+## Create Local SSL Cert
+
+`openssl req -x509 -newkey rsa:4096 -keyout privatekey.pem -out certificate.pem -days 365 -nodes`
 
 ## Test
 

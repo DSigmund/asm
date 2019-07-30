@@ -1,6 +1,10 @@
 {
   "port": 3000,
-  "database":"database.sample.sqlite",
+  "ssl": {
+    "privatekey":"privatekey.pem",
+    "certificate":"certificate.pem"
+  },
+  "database":"database/sample/path",
   "channels": {
     "facebook": {
       "pageid":"your-id",

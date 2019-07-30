@@ -3,6 +3,8 @@ coverage/
 stryker.log
 src/config.json
 dist/config.json
+src/*.pem
+dist/*.pem
 src/data/
 !src/data/reach.sample.json
 !src/data/posts.sample.json

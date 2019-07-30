@@ -46,7 +46,6 @@ class Database {
                 timestamp: now,
                 data: data
             };
-            console.log(channel + ' PAGE: ' + JSON.stringify(data));
         });
     }
     createChannelIfNeeded(channel) {
@@ -64,7 +63,7 @@ class Database {
                 this._posts[channel][id] = {
                     id: id,
                     create: create,
-                    title: title.substring(0, 35),
+                    title: title,
                     link: link,
                     data: {}
                 };
@@ -73,18 +72,23 @@ class Database {
                 timestamp: now,
                 data: data
             };
-            console.log(channel + ' Post : ' + id + ': ' + title.substring(0, 25) + ' > ' + JSON.stringify(data));
         });
     }
     getPosts(channel, from, to) {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
-        });
+        if (!from && !to) {
+            return this._posts[channel];
+        }
+        else {
+            throw new Error('Method not fully implemented.');
+        }
     }
     GetChannelInfo(channel, from, to) {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
-        });
+        if (!from && !to) {
+            return this._channel[channel];
+        }
+        else {
+            throw new Error('Method not fully implemented.');
+        }
     }
 }
 exports.default = Database;

@@ -12,8 +12,6 @@ abstract class Channel {
     this._database = database
   }
   public async abstract CollectData (): Promise<void>
-  public async abstract GetChannelInfo (from: Date, to: Date): Promise<any>
-  public async abstract GetPosts (from: Date, to: Date): Promise<Post[]>
 }
 
 export default Channel

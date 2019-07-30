@@ -36,16 +36,6 @@ class Facebook extends channel_1.default {
             }
         });
     }
-    GetChannelInfo(from, to) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this._database.GetChannelInfo('facebook', from, to);
-        });
-    }
-    GetPosts(from, to) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this._database.getPosts('facebook', from, to);
-        });
-    }
 }
 exports.default = Facebook;
 //# sourceMappingURL=facebook.js.map

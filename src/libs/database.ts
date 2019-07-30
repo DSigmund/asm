@@ -67,11 +67,19 @@ class Database {
     }
   }
 
-  public async getPosts (channel: string, from: Date, to: Date): Promise<Post[]> {
-    throw new Error('Method not implemented.')
+  public getPosts (channel: string, from?: Date, to?: Date): Promise<any> {
+    if (!from && !to) {
+      return this._posts[channel]
+    } else {
+      throw new Error('Method not fully implemented.')
+    }
   }
-  public async GetChannelInfo (channel: string, from: Date, to: Date): Promise<number> {
-    throw new Error('Method not implemented.')
+  public GetChannelInfo (channel: string, from?: Date, to?: Date): Promise<any> {
+    if (!from && !to) {
+      return this._channel[channel]
+    } else {
+      throw new Error('Method not fully implemented.')
+    }
   }
 }
 

@@ -28,14 +28,6 @@ class Facebook extends Channel {
       await this._database.InsertPost('facebook', post.id, post.created_time, post.message, post.permalink_url, { reactions: reactions, comments: comments })
     }
   }
-
-  public async GetChannelInfo (from: Date, to: Date): Promise<any> {
-    return this._database.GetChannelInfo('facebook', from, to)
-  }
-
-  public async GetPosts (from: Date, to: Date): Promise<Post[]> {
-    return this._database.getPosts('facebook', from, to)
-  }
 }
 
 export default Facebook
