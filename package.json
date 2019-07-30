@@ -11,7 +11,9 @@
     "lint:fix": "tslint -p . -c tslint.json src/**/*.ts --fix",
     "tsdoc": "typedoc  --out docs/tsdoc src --exclude src/**/*.test.ts",
     "check": "npm audit && npm outdated",
-    "build": "tsc"
+    "build": "tsc",
+    "collect":"node ./dist/collect.js",
+    "server":"node ./dist/server.js"
   },
   "repository": {
     "type": "git",

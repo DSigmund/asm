@@ -3,7 +3,6 @@
  * Show Reports
  * provide raw-data as json
  */
-// import helmet from 'helmet'
 import express from 'express'
 import helmet from 'helmet'
 import { readFileSync } from 'fs'
