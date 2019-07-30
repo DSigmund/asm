@@ -12,8 +12,8 @@
     "tsdoc": "typedoc  --out docs/tsdoc src --exclude src/**/*.test.ts",
     "check": "npm audit && npm outdated",
     "build": "tsc",
-    "collect":"node ./dist/collect.js",
-    "server":"node ./dist/server.js"
+    "collect": "node ./dist/collect.js",
+    "server": "node ./dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,8 @@
     "async-request": "^1.2.0",
     "express": "^4.17.1",
     "helmet": "^3.20.0",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "pug": "^2.0.4"
   },
   "devDependencies": {
     "@stryker-mutator/core": "^2.0.1",
@@ -47,7 +48,7 @@
     "tslint-config-security": "^1.16.0",
     "tslint-config-standard": "^8.0.1",
     "tslint-jest": "^1.0.5",
-    "typedoc": "^0.15.0-0",
+    "typedoc": "^0.15.0",
     "typescript": "^3.5.3"
   },
   "husky": {
