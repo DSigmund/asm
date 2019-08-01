@@ -23,7 +23,7 @@ class Facebook extends channel_1.default {
         return __awaiter(this, void 0, void 0, function* () {
             let response = yield request('https://graph.facebook.com/v3.3/' + this._pageid + '/?fields=fan_count&access_token=' + this._token);
             let fans = JSON.parse(response.body).fan_count;
-            yield this._database.InsertChannelInfo('facebook', { fans: fans });
+            yield this._database.InsertChannelInfo('facebook', { fans: fans }, 'fans');
             response = yield request('https://graph.facebook.com/v3.3/' + this._pageid + '/posts?fields=id,permalink_url,created_time,message,reactions.summary(total_count),comments.summary(total_count)&access_token=' + this._token);
             let posts = JSON.parse(response.body).data;
             for (let index = 0; index < posts.length; index++) {
@@ -32,7 +32,7 @@ class Facebook extends channel_1.default {
                     continue; // No Message means, this is no real post
                 let reactions = post.reactions.summary.total_count;
                 let comments = post.comments.summary.total_count;
-                yield this._database.InsertPost('facebook', post.id, post.created_time, post.message, post.permalink_url, { reactions: reactions, comments: comments });
+                yield this._database.InsertPost('facebook', post.id, post.created_time, post.message, post.permalink_url, { reactions: reactions, comments: comments }, 'reactions');
             }
         });
     }

@@ -37,14 +37,15 @@ class Database {
             yield this._writeFile(path.join(this._path, 'posts.json'), JSON.stringify(this._posts), 'utf8');
         });
     }
-    InsertChannelInfo(channel, data) {
+    InsertChannelInfo(channel, data, main) {
         return __awaiter(this, void 0, void 0, function* () {
             let yearKW = moment_1.default().format('YYYY-WW');
             let now = moment_1.default().format('YYYY-MM-DD');
             this.createChannelIfNeeded(channel);
             this._channel[channel][yearKW] = {
                 timestamp: now,
-                data: data
+                data: data,
+                main: main
             };
         });
     }
@@ -54,7 +55,7 @@ class Database {
         if (!this._posts[channel])
             this._posts[channel] = {};
     }
-    InsertPost(channel, id, create, title, link, data) {
+    InsertPost(channel, id, create, title, link, data, main) {
         return __awaiter(this, void 0, void 0, function* () {
             let yearKW = moment_1.default().format('YYYY-WW');
             let now = moment_1.default().format('YYYY-MM-DD');
@@ -70,7 +71,8 @@ class Database {
             }
             this._posts[channel][id].data[yearKW] = {
                 timestamp: now,
-                data: data
+                data: data,
+                main: main
             };
         });
     }
@@ -100,22 +102,31 @@ class Database {
         let yearKW = moment.format('YYYY-WW');
         let lastyearKW = moment.clone().subtract(1, 'week').format('YYYY-WW');
         let data = {};
+        data.year = moment.format('YYYY');
+        data.kw = moment.format('WW');
+        data.creation = moment.format('DD.MM.YYYY');
+        data.title = 'Weekly :: ' + moment.format('YYYY / WW');
+        data.channels = {};
         let self = this;
         Object.keys(self._channel).forEach(function (c) {
             let channel = self._channel[c];
-            data[c] = {
+            data.channels[c] = {
+                name: c,
                 now: channel[yearKW].data,
                 last: channel[lastyearKW].data,
-                diff: self.getdiff(channel[yearKW].data, channel[lastyearKW].data)
+                diff: self.getdiff(channel[yearKW].data, channel[lastyearKW].data),
+                main: channel[yearKW].data.main
             };
+            // TODO: add posts
         });
-        console.log(JSON.stringify(data));
         return data;
     }
     getdiff(thisWeek, lastWeek) {
         let diff = {};
         Object.keys(thisWeek).forEach(function (v) {
-            diff[v] = thisWeek[v] - lastWeek[v];
+            if (v !== 'main') {
+                diff[v] = thisWeek[v] - lastWeek[v];
+            }
         });
         return diff;
     }

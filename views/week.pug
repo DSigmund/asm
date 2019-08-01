@@ -1,0 +1,49 @@
+extends layout.pug
+
+block content
+  h2 Summary
+  table.table
+    thead
+      tr
+        th Channel
+        th KPI
+        th Last Week
+        th This Week
+        th Diff
+    tbody
+      each channel in channels
+        tr
+          td= channel.name
+          td= channel.now.main
+          td= channel.last[channel.now.main]
+          td= channel.now[channel.now.main]
+          td= channel.diff[channel.now.main]
+  hr
+  h2 Extended
+    each channel in channels
+      h3= channel.name
+      h4 Channel
+      table.table
+        thead
+          tr
+            th KPI
+            th Last Week
+            th This Week
+            th Diff
+        tbody
+          each val,index in channel.diff
+            tr
+              td= index
+              td= channel.last[index]
+              td= channel.now[index]
+              td= channel.diff[index]
+      h4 Posts in Week
+      p List of posts
+      h4 Top 10 All-Time Posts
+      p list of posts
+      hr
+
+
+
+
+

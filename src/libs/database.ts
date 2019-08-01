@@ -29,7 +29,7 @@ class Database {
     await this._writeFile(path.join(this._path, 'posts.json'), JSON.stringify(this._posts), 'utf8')
   }
 
-  public async InsertChannelInfo (channel: string, data: any): Promise<void> {
+  public async InsertChannelInfo (channel: string, data: any, main: string): Promise<void> {
     let yearKW: any = moment().format('YYYY-WW')
     let now: any = moment().format('YYYY-MM-DD')
 
@@ -37,7 +37,8 @@ class Database {
 
     this._channel[channel][yearKW] = {
       timestamp: now,
-      data: data
+      data: data,
+      main: main
     }
   }
   private createChannelIfNeeded (channel: string): void {
@@ -45,7 +46,7 @@ class Database {
     if (!this._posts[channel]) this._posts[channel] = {}
   }
 
-  public async InsertPost (channel: string, id: string, create: string, title: string, link: string, data: any): Promise<void> {
+  public async InsertPost (channel: string, id: string, create: string, title: string, link: string, data: any, main: string): Promise<void> {
     let yearKW: any = moment().format('YYYY-WW')
     let now: any = moment().format('YYYY-MM-DD')
 
@@ -63,7 +64,8 @@ class Database {
 
     this._posts[channel][id].data[yearKW] = {
       timestamp: now,
-      data: data
+      data: data,
+      main: main
     }
   }
 
@@ -93,13 +95,20 @@ class Database {
     let yearKW: any = moment.format('YYYY-WW')
     let lastyearKW: any = moment.clone().subtract(1, 'week').format('YYYY-WW')
     let data: any = {}
+    data.year = moment.format('YYYY')
+    data.kw = moment.format('WW')
+    data.creation = moment.format('DD.MM.YYYY')
+    data.title = 'Weekly :: ' + moment.format('YYYY / WW')
+    data.channels = {}
     let self = this
     Object.keys(self._channel).forEach(function (c) {
       let channel = self._channel[c]
-      data[c] = {
+      data.channels[c] = {
+        name: c,
         now: channel[yearKW].data,
         last: channel[lastyearKW].data,
-        diff: self.getdiff(channel[yearKW].data, channel[lastyearKW].data)
+        diff: self.getdiff(channel[yearKW].data, channel[lastyearKW].data),
+        main: channel[yearKW].data.main
       }
       // TODO: add posts
     })
@@ -108,7 +117,9 @@ class Database {
   private getdiff (thisWeek: any, lastWeek: any): any {
     let diff: any = {}
     Object.keys(thisWeek).forEach(function (v) {
-      diff[v] = thisWeek[v] - lastWeek[v]
+      if(v !== 'main') {
+        diff[v] = thisWeek[v] - lastWeek[v]
+      }
     })
     return diff
   }

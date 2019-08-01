@@ -8,9 +8,9 @@ declare class Database {
     constructor(databasePath: string);
     LoadDatabase(): Promise<void>;
     SaveDatabase(): Promise<void>;
-    InsertChannelInfo(channel: string, data: any): Promise<void>;
+    InsertChannelInfo(channel: string, data: any, main: string): Promise<void>;
     private createChannelIfNeeded;
-    InsertPost(channel: string, id: string, create: string, title: string, link: string, data: any): Promise<void>;
+    InsertPost(channel: string, id: string, create: string, title: string, link: string, data: any, main: string): Promise<void>;
     getPosts(channel: string, from?: Date, to?: Date): Promise<any>;
     GetChannelInfo(channel: string, from?: Date, to?: Date): Promise<any>;
     GetYearData(year: any): any;
