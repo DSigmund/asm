@@ -38,7 +38,13 @@ block content
               td= channel.now[index]
               td= channel.diff[index]
       h4 Posts in Week
-      p List of posts
+      each post in channel.posts.new
+        .card
+          .card-body
+            .card-title= post.create
+            p.card-text= post.title
+            p.card-text= post.data
+
       h4 Top 10 All-Time Posts
       p list of posts
       hr

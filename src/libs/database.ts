@@ -29,6 +29,10 @@ class Database {
     await this._writeFile(path.join(this._path, 'posts.json'), JSON.stringify(this._posts), 'utf8')
   }
 
+  public getPosts (channel: string): any {
+    return this._posts[channel]
+  }
+
   public async InsertChannelInfo (channel: string, data: any, main: string): Promise<void> {
     let yearKW: any = moment().format('YYYY-WW')
     let now: any = moment().format('YYYY-MM-DD')
@@ -69,12 +73,44 @@ class Database {
     }
   }
 
-  public getPosts (channel: string, from?: Date, to?: Date): Promise<any> {
-    if (!from && !to) {
-      return this._posts[channel]
-    } else {
-      throw new Error('Method not fully implemented.')
+  private postsToArray (channel: string): any {
+    let postsArray = []
+    for (const post in this._posts[channel]) {
+      if (this._posts[channel].hasOwnProperty(post)) {
+        const element = this._posts[channel][post]
+        postsArray.push(element)
+      }
     }
+    return postsArray
+  }
+
+  public getPostsInWeek (channel: string, time: moment.Moment): any {
+    let posts = []
+    let postsArray = this.postsToArray(channel)
+    for (let index = 0; index < postsArray.length; index++) {
+      const post = postsArray[index]
+      if (moment(post.create).isSame(time, 'week')) {
+        posts.push(post)
+      }
+    }
+    return posts
+  }
+
+  public getTopPosts (channel: string, upTo: moment.Moment): any {
+    let posts = this._posts[channel]
+    let main = posts[Object.keys(posts)[0]].data[upTo.format('YYYY-WW')].main
+
+    let postsArray = this.postsToArray(channel)
+
+    postsArray.sort(function (a: any, b: any) {
+      let valA = a.data[upTo.format('YYYY-WW')].data[main]
+      let valB = b.data[upTo.format('YYYY-WW')].data[main]
+      if (valA < valB) return -1
+      if (valA > valB) return 1
+      return 0
+    })
+
+    return postsArray.slice(0, 10)
   }
 
   public GetChannelInfo (channel: string, from?: Date, to?: Date): Promise<any> {
@@ -108,9 +144,13 @@ class Database {
         now: channel[yearKW].data,
         last: channel[lastyearKW].data,
         diff: self.getdiff(channel[yearKW].data, channel[lastyearKW].data),
-        main: channel[yearKW].data.main
+        main: channel[yearKW].data.main,
+        posts: {
+          new: self.getPostsInWeek(c, moment),
+          top: self.getTopPosts(c, moment)
+        }
       }
-      // TODO: add posts
+      // TODO: get top 10 posts of all timer
     })
     return data
   }
