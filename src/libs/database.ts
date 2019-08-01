@@ -86,10 +86,10 @@ class Database {
   }
 
   public GetYearData (year: any): any {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.')
   }
   public GetMonthData (year: any, month: any): any {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.')
   }
   public GetWeekData (moment: moment.Moment): any {
     let yearKW: any = moment.format('YYYY-WW')
@@ -117,7 +117,7 @@ class Database {
   private getdiff (thisWeek: any, lastWeek: any): any {
     let diff: any = {}
     Object.keys(thisWeek).forEach(function (v) {
-      if(v !== 'main') {
+      if (v !== 'main') {
         diff[v] = thisWeek[v] - lastWeek[v]
       }
     })
