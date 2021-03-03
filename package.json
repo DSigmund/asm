@@ -30,7 +30,7 @@
     "express": "^4.17.1",
     "helmet": "^3.20.0",
     "moment": "^2.24.0",
-    "pug": "^2.0.4"
+    "pug": "^3.0.1"
   },
   "devDependencies": {
     "@stryker-mutator/core": "^2.0.1",
